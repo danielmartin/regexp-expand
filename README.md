@@ -1,15 +1,18 @@
 # regexp-expand
-Show the ELisp regular expression at point in rx form.
+Show the ELisp regular expression at point in `rx` form.
 
 ## Installation
 
-Clone this repository and add it to your Emacs `load-path`:
+This package requires `xr`, which is available in ELPA/MELPA: `M-x package-install RET xr RET`
+
+Then, clone this repository to your local machine and add the following to your initialization file:
 
 ```elisp
 (add-to-list 'load-path "<Path to regexp-expand directory>")
+(require 'regexp-expand)
 ```
 
-This program autoloads a command, `regexp-expand`, that, when the point is inside a string, will replace it inline with an equivalent and much more readable `rx` form of the same regular expression.
+The main entry point of this package is `regexp-expand`, a command that, when the point is inside a regular expression, will replace it temporarily with an equivalent but much more readable `rx` form.
 
 ## Screenshot
 
