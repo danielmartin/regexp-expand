@@ -14,6 +14,6 @@ Then, clone this repository to your local machine and add the following to your 
 
 The main entry point of this package is `regexp-expand`, a command that, when the point is inside a regular expression, will replace it temporarily with an equivalent but much more readable `rx` form.
 
-## Screenshot
+## Demonstration
 
-![Sample usage of regexp-expand](screenshots/sample.png)
+![Sample usage of regexp-expand](screenshots/sample.gif)
