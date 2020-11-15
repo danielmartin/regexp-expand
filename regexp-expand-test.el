@@ -20,11 +20,11 @@
 
 ;; Helpers
 (defun check-regexp-explanation (regexp)
-  "Check if calling `regexp-explain' on REGEXP adds a correct overlay to the buffer."
+  "Check if calling `regexp-expand' on REGEXP adds a correct overlay to the buffer."
   (with-temp-buffer
     (insert (prin1-to-string regexp))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (should (equal (overlay-get regexp-expand-overlay 'regexp-expand-original-regexp)
                    (prin1-to-string regexp)))
     (should (equal (buffer-substring-no-properties (overlay-start regexp-expand-overlay)
@@ -55,14 +55,14 @@
    (with-temp-buffer
      (insert "Not a string constant")
      (goto-char (point-min))
-     (regexp-explain))))
+     (regexp-expand))))
 
 ;; Minor mode behavior tests
 (ert-deftest regexp-expand-enter-mode ()
   (with-temp-buffer
     (insert (prin1-to-string "Hello"))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (should (bound-and-true-p regexp-expand-mode))))
 
 (ert-deftest regexp-expand-enter-mode-inserts-rx-notation-in-buffer ()
@@ -70,7 +70,7 @@
     (insert (prin1-to-string
              "\\([0-9]\\{5\\}\\): \\([0-9]\\{10\\}\\) \\([0-9]\\{5\\}\\) \\(.\\)"))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (should (equal (buffer-substring-no-properties (point-min) (point-max))
                    "(seq (group
       (= 5
@@ -91,14 +91,14 @@
    (with-temp-buffer
      (insert (prin1-to-string "Hello"))
      (goto-char (point-min))
-     (regexp-explain)
+     (regexp-expand)
      (insert "Buffer should not be modifiable"))))
 
 (ert-deftest regexp-expand-exit-mode ()
   (with-temp-buffer
     (insert (prin1-to-string "Hello"))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (call-interactively (key-binding (kbd "q")))
     (should-not (bound-and-true-p regexp-expand-mode))))
 
@@ -106,7 +106,7 @@
   (with-temp-buffer
     (insert (prin1-to-string "Hello"))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (call-interactively (key-binding (kbd "q")))
     (should (equal (buffer-substring-no-properties (point-min) (point-max))
                    "\"Hello\""))))
@@ -116,7 +116,7 @@
     (with-silent-modifications
       (insert (prin1-to-string "Hello")))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (call-interactively (key-binding (kbd "q")))
     (should-not (buffer-modified-p))))
 
@@ -124,7 +124,7 @@
   (with-temp-buffer
     (insert (prin1-to-string "Hello"))
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (call-interactively (key-binding (kbd "q")))
     (should (buffer-modified-p))))
 
@@ -133,7 +133,7 @@
     (insert (prin1-to-string "Hello"))
     (setq before-buffer-undo-list buffer-undo-list)
     (goto-char (point-min))
-    (regexp-explain)
+    (regexp-expand)
     (call-interactively (key-binding (kbd "q")))
     (should (and
              buffer-undo-list
